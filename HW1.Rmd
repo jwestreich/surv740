@@ -1,6 +1,6 @@
 ---
 title: "HW1"
-author: 15"Jay Westreich"
+author: "Jay Westreich"
 date: "9/15/23"
 output: pdf_document
 ---
@@ -60,7 +60,7 @@ list(mean_2.5_percentile = mean_percentiles[1], mean_97.5_percentile = mean_perc
 
 1a estimated the population parameters based on that one sample. 1b approximated the distribution of all possible sample means, providing a more robust understanding of how sample means can vary around the population mean.
 
-#1d.The population in 1a is treated as fixed in a frequentist perspective. Please describe in words how might we formulate this problem from a superpopulation perspective?
+#1d. The population in 1a is treated as fixed in a frequentist perspective. Please describe in words how might we formulate this problem from a superpopulation perspective?
 
 In a superpopulation perspective, the population of n=10,000 is considered a random sample drawn from an infinite superpopulation that has its own true mean and variance. We treat this mean and variance as random variables from a distribution. When drawing a sample of size n=100 from your population of 10,000, it is taking a sample from the superpopulation. The mean and 95% confidence interval calculated from this sample are estimates not just for both the sample of 10,000 and the superpopulation.
 
@@ -106,7 +106,7 @@ pt3_samples <- tibble(
 )
 ```
 
-#3a. For all 6 possible simple random samples of size n=2, compute the arithmetic,harmonic, and geometric means.
+#3a. For all 6 possible simple random samples of size n=2, compute the arithmetic, harmonic, and geometric means.
 ```{r}
 pt3_samples<-pt3_samples%>%
   mutate(arithmetic_mean=(x1+x2)/2)%>%
