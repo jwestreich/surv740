@@ -1,0 +1,119 @@
+---
+title: "HW2"
+author: "Jay Westreich"
+date: "9/29/23"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+library(stats)
+library(markdown)
+library(ggplot2)
+```
+
+#1a. Using the statisticians design, identify all 11 possible samples given this design. Using the estimator Y=yi/pi, calculate the estimate of the total weight of the elephants for each sample. Make a histogram of these estimates. Report the mean of these 11 estimates.
+```{r}
+elephant_df <- tibble(
+  Elephant = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+  Weight = c(9000, 9800, 10000, 10100, 10200, 11000, 11100, 11300, 11700, 12200, 13000),
+  Probability = c(0.01, 0.01, 0.01, 0.01, 0.01, 0.90, 0.01, 0.01, 0.01, 0.01, 0.01)
+)
+
+samples<-elephant_df%>%
+  select(Elephant, Weight)%>%
+  rename(sample=Elephant)
+
+print("11 possible samples")
+print(samples)
+```
+
+```{r}
+weight_estimates<-elephant_df%>%
+  mutate(estimate=Weight/Probability)
+
+hist(weight_estimates$estimate)
+
+print(paste0("Mean of 11 estimates: ",mean(weight_estimates$estimate)))
+
+```
+
+#1b. Basu’s point is that the “long-run” properties may not be a good standard for judging estimators. Nevertheless, please examine an alternative sample design that assigns equal probability of selection to every elephant (1/11). With a sample size of 1, there are 11 possible samples. Using the estimator Y=yi/pi, calculate the total weight of the elephants for each sample. Make a histogram of these estimates. Report the mean of these 11 estimates.
+```{r}
+elephant_df2 <- tibble(
+  Elephant = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
+  Weight = c(9000, 9800, 10000, 10100, 10200, 11000, 11100, 11300, 11700, 12200, 13000)
+)%>%
+  mutate(Probability=1/11)
+
+weight_estimates2<-elephant_df2%>%
+  mutate(estimate=Weight/Probability)
+
+hist(weight_estimates2$estimate)
+
+print(paste0("Mean of 11 estimates: ",mean(weight_estimates2$estimate)))
+
+```
+
+#1c. We have three designs – the manager’s design (take the middle elephant), the statistician’s design (part 1a), and the alternative probability design from part 1b. Describe the strengths and weaknesses of each of the three designs. Which of these designs is the best approach to the problem? Explain.
+The strength of the manager's design is that it has the best estimate in the short run. The weakness of the manager's design is that is does not take into account any variation in the weights of the rest of the observations. The strength of the statistician's design is that is has the best estimate of the weight in the long-run. The weakness of the statisticians' design is that there are many times in the short run, its estimate is not close to the weight of the population. The weakness of the alternative probability is that it does not take into account that some elephants are better estimators of the population weight than than other elephants.
+
+#2a. Simulate a posterior distribution using the same approach as outlined on slide 28.
+```{r}
+n <- 30
+x <- 18
+alpha_prior <- 1
+beta_prior <- 1
+alpha_posterior <- alpha_prior + x
+beta_posterior <- beta_prior + n - x
+
+posterior_samples <- rbeta(2500, alpha_posterior, beta_posterior)
+```
+
+#2b. Create a histogram like the one on slide 29.
+```{r}
+hist(posterior_samples)
+```
+
+#2c. Using these simulated draws, what is the probability that at least 40% of the population has insurance?
+```{r}
+prob_at_least_40 <- mean(posterior_samples >= 0.4)
+prob_at_least_40
+```
+
+#2d. Using the same population of 500, now change the sample size to 15. We find that 9 have insurance. Simulate a posterior distribution using the same approach as outlines on slide 28.
+```{r}
+n2 <- 15
+x2 <- 9
+alpha_prior2 <- 1
+beta_prior2 <- 1
+alpha_posterior2 <- alpha_prior2 + x2
+beta_posterior2 <- beta_prior2 + n2 - x2
+
+posterior_samples2 <- rbeta(2500, alpha_posterior2, beta_posterior2)
+```
+
+#2e. Using these simulated draws, what is the probability that at least 40% of the population has insurance?
+```{r}
+prob_at_least_40_2 <- mean(posterior_samples2 >= 0.4)
+prob_at_least_40_2
+```
+
+#2f. How does the smaller sample size in part 2e impact the inference?
+The smaller sample size makes us less confident in our inference that at least 40% of the population has insurance, even though both samples have the same rate of having insurance.
+
+#3.We have talked about Bayesian and Frequentist perspectives on statistical inference. Choose one of these perspectives and make a brief defense of it. The length of your argument need not be more than a page. Cover what you see as the major strengths of the perspective.
+
+The Bayesian perspective on statistical inference offers a flexible and intuitive framework for understanding the world through data. One of its major strengths is the incorporation of prior knowledge. Unlike frequentist statistics, which only rely on current data, Bayesian methods allow you to integrate what you already know into your analysis. This is particularly useful in situations where data is scarce or expensive to collect.
+
+Another advantage is its ability to provide a full probability distribution as the outcome, rather than a single point estimate. This distribution captures the uncertainty around the parameter you're estimating, giving you a more comprehensive view of possible outcomes. This is especially useful in decision-making scenarios where understanding the range of possibilities is crucial.
+
+Bayesian methods are also highly adaptable. They can be easily updated with new data, allowing for a more dynamic form of analysis. In a rapidly changing environment, this is a significant advantage. You can start with an initial set of data and prior beliefs, and as new data becomes available, you can update your beliefs without having to start from scratch.
+
+Lastly, Bayesian statistics is conceptually simpler and more intuitive for many people. The idea of updating beliefs with new data is a natural way of thinking about learning from data. This makes it easier to explain and justify your methods and conclusions to those who may not have a strong statistical background.
+
+In summary, the Bayesian perspective offers a flexible, comprehensive, and intuitive framework for statistical inference, making it a powerful tool for data analysis.
