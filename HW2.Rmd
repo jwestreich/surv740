@@ -64,43 +64,47 @@ The strength of the manager's design is that it has the best estimate in the sho
 
 #2a. Simulate a posterior distribution using the same approach as outlined on slide 28.
 ```{r}
-n <- 30
-x <- 18
-alpha_prior <- 1
-beta_prior <- 1
-alpha_posterior <- alpha_prior + x
-beta_posterior <- beta_prior + n - x
+M<-2500
 
-posterior_samples <- rbeta(2500, alpha_posterior, beta_posterior)
+results<-as.data.frame(matrix(nrow=M, ncol=3))
+names(results)<-c("count","proportion","gte40pct")
+
+theta<-rbeta(M,19,13)
+
+for (i in 1:M){
+  results[i,1]<-rbinom(1,470,theta[i])
+  results[i,2]<-(results[i,1]+18)/500
+  results[i,3]<-ifelse(results[i,2]>=0.4,1,0)
+}
 ```
 
 #2b. Create a histogram like the one on slide 29.
 ```{r}
-hist(posterior_samples)
+hist(results$proportion)
 ```
 
 #2c. Using these simulated draws, what is the probability that at least 40% of the population has insurance?
 ```{r}
-prob_at_least_40 <- mean(posterior_samples >= 0.4)
-prob_at_least_40
+mean(results$gte40pct)
 ```
 
 #2d. Using the same population of 500, now change the sample size to 15. We find that 9 have insurance. Simulate a posterior distribution using the same approach as outlines on slide 28.
 ```{r}
-n2 <- 15
-x2 <- 9
-alpha_prior2 <- 1
-beta_prior2 <- 1
-alpha_posterior2 <- alpha_prior2 + x2
-beta_posterior2 <- beta_prior2 + n2 - x2
+results2<-as.data.frame(matrix(nrow=M, ncol=3))
+names(results2)<-c("count","proportion","gte40pct")
 
-posterior_samples2 <- rbeta(2500, alpha_posterior2, beta_posterior2)
+theta2<-rbeta(M,10,7)
+
+for (i in 1:M){
+  results2[i,1]<-rbinom(1,485,theta[i])
+  results2[i,2]<-(results[i,1]+9)/500
+  results2[i,3]<-ifelse(results[i,2]>=0.4,1,0)
+}
 ```
 
 #2e. Using these simulated draws, what is the probability that at least 40% of the population has insurance?
 ```{r}
-prob_at_least_40_2 <- mean(posterior_samples2 >= 0.4)
-prob_at_least_40_2
+mean(results2$gte40pct)
 ```
 
 #2f. How does the smaller sample size in part 2e impact the inference?
