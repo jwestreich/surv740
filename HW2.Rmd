@@ -36,6 +36,8 @@ print(samples)
 weight_estimates<-elephant_df%>%
   mutate(estimate=Weight/Probability)
 
+print(weight_estimates)
+
 hist(weight_estimates$estimate)
 
 print(paste0("Mean of 11 estimates: ",mean(weight_estimates$estimate)))
@@ -60,6 +62,7 @@ print(paste0("Mean of 11 estimates: ",mean(weight_estimates2$estimate)))
 ```
 
 #1c. We have three designs – the manager’s design (take the middle elephant), the statistician’s design (part 1a), and the alternative probability design from part 1b. Describe the strengths and weaknesses of each of the three designs. Which of these designs is the best approach to the problem? Explain.
+
 The strength of the manager's design is that it has the best estimate in the short run. The weakness of the manager's design is that is does not take into account any variation in the weights of the rest of the observations. The strength of the statistician's design is that is has the best estimate of the weight in the long-run. The weakness of the statisticians' design is that there are many times in the short run, its estimate is not close to the weight of the population. The weakness of the alternative probability is that it does not take into account that some elephants are better estimators of the population weight than than other elephants.
 
 #2a. Simulate a posterior distribution using the same approach as outlined on slide 28.
@@ -108,16 +111,13 @@ mean(results2$gte40pct)
 ```
 
 #2f. How does the smaller sample size in part 2e impact the inference?
+
 The smaller sample size makes us less confident in our inference that at least 40% of the population has insurance, even though both samples have the same rate of having insurance.
 
 #3.We have talked about Bayesian and Frequentist perspectives on statistical inference. Choose one of these perspectives and make a brief defense of it. The length of your argument need not be more than a page. Cover what you see as the major strengths of the perspective.
 
-The Bayesian perspective on statistical inference offers a flexible and intuitive framework for understanding the world through data. One of its major strengths is the incorporation of prior knowledge. Unlike frequentist statistics, which only rely on current data, Bayesian methods allow you to integrate what you already know into your analysis. This is particularly useful in situations where data is scarce or expensive to collect.
+One major strength of the Bayesian perspective on statistical inference over the frequentist perspective is that Bayestian incorporates prior knowledge. This can be useful in cases where answers to questions may lean on some intuitive knowledge, such as the probability of a coin toss landing on heads being 50%. This property also helps when there are small sample sizes, because we are able to use a baseline of prior knowledge instead of only relying on the data. This creates the posterior, which is something that a frequentist perspective cannot produce.
 
-Another advantage is its ability to provide a full probability distribution as the outcome, rather than a single point estimate. This distribution captures the uncertainty around the parameter you're estimating, giving you a more comprehensive view of possible outcomes. This is especially useful in decision-making scenarios where understanding the range of possibilities is crucial.
+Another major strength of the Bayesian perspective is that data can be treated as random variables with a probability distribution, while the frequentist perspective treats parameters as fixed but unknown. This allows Bayestian methods to provide a more nuanced understanding of data by being able to attach the data to a probability distribution.
 
-Bayesian methods are also highly adaptable. They can be easily updated with new data, allowing for a more dynamic form of analysis. In a rapidly changing environment, this is a significant advantage. You can start with an initial set of data and prior beliefs, and as new data becomes available, you can update your beliefs without having to start from scratch.
-
-Lastly, Bayesian statistics is conceptually simpler and more intuitive for many people. The idea of updating beliefs with new data is a natural way of thinking about learning from data. This makes it easier to explain and justify your methods and conclusions to those who may not have a strong statistical background.
-
-In summary, the Bayesian perspective offers a flexible, comprehensive, and intuitive framework for statistical inference, making it a powerful tool for data analysis.
+One more major strength of the Bayesian perspective is that it can be updated with new data. A frequentist would need to perform new analysis each time they collected new data, and this new analysis would not take into account the results of any previous analyses. On the other hand, Bayesian methods update their beliefs as new data becomes available. The posterior distribution from one analysis can be used as the prior distribution for the next analysis, and be continuously updated as more data becomes available.
